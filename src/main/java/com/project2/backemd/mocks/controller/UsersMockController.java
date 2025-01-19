@@ -47,9 +47,9 @@ public class UsersMockController {
         headers.add("Content-Type", "application/json");
         return ResponseEntity.status(202)
                 .headers(headers)
-                .body(List.of(UserDto.builder()
-                        .name("Jhon")
-                        .role(List.of("USER"))
+                .body(List.of(new UserDto.Builder()
+                        .setName("Jhon")
+                        .setRole(List.of("USER"))
                         .build()));
     }
 }

@@ -21,7 +21,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class UsersService {
 
     private final static String USER_NOT_FOUND = "User not found with ID: ";
@@ -36,6 +35,14 @@ public class UsersService {
     private final RolesRepository rolesService;
 
     private final PasswordEncoder passwordEncoder;
+
+    public UsersService(UsersRepository repo, UserMapper mapper, OrdersRepository ordersService, RolesRepository rolesService, PasswordEncoder passwordEncoder) {
+        this.repo = repo;
+        this.mapper = mapper;
+        this.ordersService = ordersService;
+        this.rolesService = rolesService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Transactional
     public boolean authenticate(String username, String password) {
@@ -55,12 +62,12 @@ public class UsersService {
         User user = repo.findById(id)
                 .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND + id));
 
-        return CompletableFuture.completedFuture(UserDto.builder()
-                .name(user.getName())
-                .role(user.getRoles().stream()
+        return CompletableFuture.completedFuture(new UserDto.Builder()
+                .setName(user.getName())
+                .setRole(user.getRoles().stream()
                         .map(rol -> rol.getDescription())
                         .toList())
-                .email(user.getEmail())
+                .setEmail(user.getEmail())
                 .build());
     }
 
@@ -69,12 +76,12 @@ public class UsersService {
     public CompletableFuture<UserDto> obtenerUsuarioAsyncPorEmail(String email) {
         User user = repo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException(USER_EMAIL_NOT_FOUND + email));
-        return CompletableFuture.completedFuture(UserDto.builder()
-                .name(user.getName())
-                .role(user.getRoles().stream()
+        return CompletableFuture.completedFuture(new UserDto.Builder()
+                .setName(user.getName())
+                .setRole(user.getRoles().stream()
                         .map(rol -> rol.getDescription())
                         .toList())
-                .email(user.getEmail())
+                .setEmail(user.getEmail())
                 .build());
     }
 

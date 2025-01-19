@@ -13,8 +13,6 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "orders")
 public class Order {
@@ -33,4 +31,44 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getVol() {
+        return vol;
+    }
+
+    public void setVol(Integer vol) {
+        this.vol = vol;
+    }
+
+    public OffsetDateTime getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(OffsetDateTime orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

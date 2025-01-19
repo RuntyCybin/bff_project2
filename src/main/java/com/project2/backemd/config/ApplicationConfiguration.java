@@ -16,9 +16,13 @@ import lombok.RequiredArgsConstructor;
 
 
 @Configuration
-@RequiredArgsConstructor
 public class ApplicationConfiguration {
+
     private final UsersRepository userRepository;
+
+    public ApplicationConfiguration(UsersRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Bean
     UserDetailsService userDetailsService() {

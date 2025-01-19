@@ -3,15 +3,13 @@ package com.project2.backemd.mappers;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+import com.project2.backemd.dto.UserDto;
+import com.project2.backemd.model.Role;
+import com.project2.backemd.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
-
-import com.project2.backemd.dto.UserDto;
-import com.project2.backemd.model.Role;
-import com.project2.backemd.model.User;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {

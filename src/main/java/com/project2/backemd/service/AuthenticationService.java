@@ -11,12 +11,16 @@ import com.project2.backemd.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
 
     private final UsersRepository usersRepository;
+
+    public AuthenticationService(AuthenticationManager authenticationManager, UsersRepository usersRepository) {
+        this.authenticationManager = authenticationManager;
+        this.usersRepository = usersRepository;
+    }
 
     public User authenticate(AuthRequest authRequest) {
 

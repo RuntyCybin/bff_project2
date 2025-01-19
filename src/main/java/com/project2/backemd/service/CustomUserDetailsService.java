@@ -13,12 +13,15 @@ import com.project2.backemd.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final static String USER_EMAIL_NOT_FOUND = "User not found with EMAIL: ";
 
     private final UsersRepository usersRepository;
+
+    public CustomUserDetailsService(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

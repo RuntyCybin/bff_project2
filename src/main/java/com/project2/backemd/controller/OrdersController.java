@@ -22,10 +22,13 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("api/orders")
-@RequiredArgsConstructor
 public class OrdersController {
 
     private final OrdersService ordersService;
+
+    public OrdersController(OrdersService ordersService) {
+        this.ordersService = ordersService;
+    }
 
     @GetMapping("order/{id}")
     public CompletableFuture<List<OrderDto>> getOrderById(

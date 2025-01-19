@@ -18,7 +18,6 @@ import com.project2.backemd.repository.OrdersRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class OrdersService {
 
     private final static String ORDER_BY_ID_NOT_FOUND = "Order not found with ID: ";
@@ -27,16 +26,20 @@ public class OrdersService {
 
     private final OrdersRepository ordersRepository;
 
+    public OrdersService(OrdersRepository ordersRepository) {
+        this.ordersRepository = ordersRepository;
+    }
+
     @Async
     public CompletableFuture<OrderDto> obteneOrderByIdAsync(Integer idOrder) {
         Order order = ordersRepository.findById(idOrder)
                 .orElseThrow(() -> new RuntimeException(ORDER_BY_ID_NOT_FOUND + idOrder));
 
-        return CompletableFuture.completedFuture(OrderDto.builder()
-                .orderId(UUID.randomUUID())
-                .userName(order.getUser().getName())
-                .orderDescription(order.getDescription())
-                .orderCreated(order.getOrderDate())
+        return CompletableFuture.completedFuture(new OrderDto.Builder()
+                .setOrderId(UUID.randomUUID())
+                .setUserName(order.getUser().getName())
+                .setOrderDescription(order.getDescription())
+                .setOrderCreated(order.getOrderDate())
                 .build());
     }
 
@@ -69,11 +72,11 @@ public class OrdersService {
         return CompletableFuture.supplyAsync(() -> {
             // Mapeo de Order a OrderDto
             List<OrderDto> orderDtos = orders.stream()
-                    .map(order -> OrderDto.builder()
-                            .orderId(UUID.randomUUID())
-                            .userName(order.getUser().getName())
-                            .orderDescription(order.getDescription())
-                            .orderCreated(order.getOrderDate())
+                    .map(order -> new OrderDto.Builder()
+                            .setOrderId(UUID.randomUUID())
+                            .setUserName(order.getUser().getName())
+                            .setOrderDescription(order.getDescription())
+                            .setOrderCreated(order.getOrderDate())
                             .build())
                     .toList();
 

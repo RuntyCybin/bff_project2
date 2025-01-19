@@ -14,7 +14,6 @@ import com.project2.backemd.service.JwtService;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -22,6 +21,11 @@ public class AuthController {
     private final AuthenticationService authenticationService;
 
     private final JwtService jwtService;
+
+    public AuthController(AuthenticationService authenticationService, JwtService jwtService) {
+        this.authenticationService = authenticationService;
+        this.jwtService = jwtService;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> createToken(@RequestBody AuthRequest authRequest)
@@ -31,9 +35,9 @@ public class AuthController {
 
         if (null != autenticatedUser) {
             String jwtToken = jwtService.generateToken(autenticatedUser);
-            LoginResponse loginResponse = LoginResponse.builder()
-                    .token(jwtToken)
-                    .expiresIn(jwtService.getExpirationTime())
+            LoginResponse loginResponse = new LoginResponse.Builder()
+                    .setToken(jwtToken)
+                    .setExpiresIn(jwtService.getExpirationTime())
                     .build();
             return ResponseEntity.ok(loginResponse);
         }

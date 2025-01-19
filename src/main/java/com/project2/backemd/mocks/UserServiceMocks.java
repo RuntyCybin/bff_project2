@@ -34,17 +34,17 @@ public class UserServiceMocks {
     
     private List<UserDto> generateUsers() {
         return List.of(
-                UserDto.builder()
-                        .name("Anna")
-                        .role(List.of("USER"))
+                new UserDto.Builder()
+                        .setName("Anna")
+                        .setRole(List.of("USER"))
                         .build(),
-                UserDto.builder()
-                        .name("John")
-                        .role(List.of("USER"))
+                new UserDto.Builder()
+                        .setName("John")
+                        .setRole(List.of("USER"))
                         .build(),
-                UserDto.builder()
-                        .name("Nick")
-                        .role(List.of("USER"))
+                new UserDto.Builder()
+                        .setName("Nick")
+                        .setRole(List.of("USER"))
                         .build());
     }
 }
