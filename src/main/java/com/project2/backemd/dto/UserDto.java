@@ -11,6 +11,9 @@ public class UserDto {
     private List<String> role;
     private String email;
 
+    public UserDto() {
+    }
+
     // Constructor privado para forzar el uso del builder
     private UserDto(Builder builder) {
         this.name = builder.name;

@@ -1,5 +1,7 @@
 package com.project2.backemd.controller;
 
+import com.project2.backemd.dto.UserDto;
+import com.project2.backemd.service.UsersService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,8 @@ import com.project2.backemd.service.JwtService;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.concurrent.CompletableFuture;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -22,9 +26,12 @@ public class AuthController {
 
     private final JwtService jwtService;
 
-    public AuthController(AuthenticationService authenticationService, JwtService jwtService) {
+    private final UsersService service;
+
+    public AuthController(AuthenticationService authenticationService, JwtService jwtService, UsersService service) {
         this.authenticationService = authenticationService;
         this.jwtService = jwtService;
+        this.service = service;
     }
 
     @PostMapping("/login")
@@ -43,6 +50,13 @@ public class AuthController {
         }
 
         return ResponseEntity.status(401).body(null);
+    }
+
+    @PostMapping("register")
+    public CompletableFuture<String> createUserAsync(@RequestBody UserDto dto) {
+        return service.guardarUsuarioAsync(dto).thenApply(result -> {
+            return "CREATED";
+        });
     }
 
 }
