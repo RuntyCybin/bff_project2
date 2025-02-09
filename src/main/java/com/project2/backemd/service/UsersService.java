@@ -18,7 +18,6 @@ import com.project2.backemd.repository.RolesRepository;
 import com.project2.backemd.repository.UsersRepository;
 
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 
 @Service
 public class UsersService {
@@ -36,7 +35,10 @@ public class UsersService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public UsersService(UsersRepository repo, UserMapper mapper, OrdersRepository ordersService, RolesRepository rolesService, PasswordEncoder passwordEncoder) {
+    public UsersService(UsersRepository repo,
+                        UserMapper mapper,
+                        OrdersRepository ordersService,
+                        RolesRepository rolesService, PasswordEncoder passwordEncoder) {
         this.repo = repo;
         this.mapper = mapper;
         this.ordersService = ordersService;
@@ -109,27 +111,25 @@ public class UsersService {
 
     @Transactional
     @Async
-    public CompletableFuture<Void> guardarUsuarioAsync(UserDto dto) {
+    public void guardarUsuarioAsync(UserDto dto) {
 
-        return CompletableFuture.runAsync(() -> {
-            try {
-                User user = new User();
-                user.setEmail(dto.getEmail());
-                user.setPassword(passwordEncoder.encode(dto.getPassword()));
-                user.setName(dto.getName());
-                Set<Role> roles = dto.getRole().stream()
-                        .map(role -> {
-                            return rolesService.findByDescription(role)
-                                    .orElseThrow(() -> new RuntimeException(
-                                            "Role not found"));
-                        })
-                        .collect(Collectors.toSet());
-                user.setRoles(roles);
+        try {
+            User user = new User();
+            user.setEmail(dto.getEmail());
+            user.setPassword(passwordEncoder.encode(dto.getPassword()));
+            user.setName(dto.getName());
+            Set<Role> roles = dto.getRole().stream()
+                    .map(role -> {
+                        return rolesService.findByDescription(role)
+                                .orElseThrow(() -> new RuntimeException(
+                                        "Role not found"));
+                    })
+                    .collect(Collectors.toSet());
+            user.setRoles(roles);
 
-                repo.save(user);
-            } catch (Exception e) {
-                throw new RuntimeException("Error saving user");
-            }
-        });
+            repo.save(user);
+        } catch (Exception e) {
+            throw new RuntimeException("Error saving user");
+        }
     }
 }
